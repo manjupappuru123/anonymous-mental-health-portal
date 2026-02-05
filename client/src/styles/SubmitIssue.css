@@ -1,0 +1,135 @@
+.submit-issue-container{max-width:800px;margin:2rem auto;padding:0 1rem}
+.submit-issue-card{background:var(--card-bg);padding:2rem;border-radius:12px;box-shadow:var(--shadow-sm)}
+
+.submit-issue-card h1{font-size:1.75rem;margin-bottom:.5rem;text-align:center;color:#111}
+
+.submit-issue-card .subtitle {
+  text-align: center;
+  color: #666;
+  margin-bottom: 2rem;
+  font-size: 1rem;
+}
+
+.submit-issue-card form {
+  margin-bottom: 2rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+}
+
+.form-group textarea {
+  resize: vertical;
+  font-family: inherit;
+}
+
+.form-group small {
+  display: block;
+  margin-top: 0.25rem;
+  color: #999;
+  font-size: 0.85rem;
+}
+
+.submit-btn{width:100%;padding:.75rem;background:linear-gradient(90deg,var(--primary-500),var(--primary-600));color:white;border:none;border-radius:10px;font-size:1rem;font-weight:700;cursor:pointer;transition:all .18s ease}
+
+.submit-btn:hover:not(:disabled) {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+.submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.success-message {
+  background-color: #e8f5e9;
+  border: 2px solid #4caf50;
+  padding: 1.5rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.success-message h3 {
+  color: #4caf50;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.success-message p {
+  margin: 0.5rem 0;
+  color: #333;
+}
+
+.success-message strong {
+  font-weight: 600;
+  color: #2e7d32;
+}
+
+.save-id {
+  background-color: #fff9c4;
+  padding: 0.5rem;
+  border-radius: 4px;
+  color: #f57f17;
+  margin: 1rem 0;
+}
+
+.redirecting {
+  font-size: 0.9rem;
+  color: #666;
+  font-style: italic;
+  margin-top: 1rem;
+}
+
+.privacy-notice{background:linear-gradient(90deg,rgba(236,252,235,1),rgba(245,249,255,1));padding:1rem;border-radius:10px;border-left:4px solid var(--success);margin-top:1.5rem}
+
+.privacy-notice h4 {
+  color: #2e7d32;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.privacy-notice ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.privacy-notice li {
+  padding: 0.5rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  color: #333;
+  line-height: 1.6;
+}
+
+.privacy-notice li:before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #4caf50;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .submit-issue-card {
+    padding: 1.5rem;
+  }
+
+  .submit-issue-card h1 {
+    font-size: 1.5rem;
+  }
+}
