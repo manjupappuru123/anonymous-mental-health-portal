@@ -15,23 +15,36 @@ export default function Navbar() {
     <nav className="navbar">
       <div className="navbar-content">
         <div className="navbar-brand">
-          <h2 onClick={() => navigate('/')}>🧠 Mental Health Portal</h2>
+          <h2 onClick={() => navigate(user ? '/counselor-dashboard' : '/')}>🧠 Mental Health Portal</h2>
         </div>
 
         <div className="nav-menu">
-          <button onClick={() => navigate('/')} className="nav-link">Home</button>
-          <button onClick={() => navigate('/submit-issue')} className="nav-link">Submit Issue</button>
-          <button onClick={() => navigate('/resources')} className="nav-link">Resources</button>
-
           {user ? (
             <>
+              <span className="nav-welcome">Welcome, {user.name}</span>
               <button onClick={() => navigate('/counselor-dashboard')} className="nav-link">Dashboard</button>
               <button onClick={handleLogout} className="nav-link logout">Logout</button>
             </>
           ) : (
             <>
-              <button onClick={() => navigate('/counselor-login')} className="nav-link login">Counselor Login</button>
-              <button onClick={() => navigate('/counselor-register')} className="nav-link register">Counselor Register</button>
+              <button onClick={() => navigate('/')} className="nav-link">Home</button>
+              <button onClick={() => navigate('/submit-issue')} className="nav-link">Submit Issue</button>
+              <button onClick={() => navigate('/resources')} className="nav-link">Resources</button>
+              <div className="nav-dropdown">
+                <button type="button" className="nav-link counselor-toggle">
+                  I'm a counselor <span className="caret">▼</span>
+                </button>
+                <div className="dropdown-menu">
+                  <button onClick={() => navigate('/counselor-login')} className="dropdown-item">
+                    <span className="dropdown-icon">🔐</span>
+                    Login
+                  </button>
+                  <button onClick={() => navigate('/counselor-register')} className="dropdown-item">
+                    <span className="dropdown-icon">📝</span>
+                    Register
+                  </button>
+                </div>
+              </div>
             </>
           )}
         </div>

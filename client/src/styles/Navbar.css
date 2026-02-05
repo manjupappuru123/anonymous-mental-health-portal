@@ -6,13 +6,77 @@
 
 .navbar-brand h2{cursor:pointer;font-size:1.25rem;margin:0;font-weight:700}
 
-.nav-menu{display:flex;gap:.5rem;align-items:center}
+.nav-menu{display:flex;gap:.75rem;row-gap:.5rem;align-items:center;flex-wrap:wrap}
+
+.nav-welcome{font-weight:400;opacity:.95;padding:0 .45rem}
 
 .nav-link{background:transparent;color:inherit;border:0;padding:.5rem .75rem;border-radius:8px;transition:all .18s ease;font-weight:600}
 
 .nav-link:hover{background:rgba(255,255,255,0.1);transform:translateY(-1px)}
 
 .nav-link.login,.nav-link.register{background:var(--surface);color:var(--primary-600);box-shadow:var(--shadow-sm)}
-.nav-link.logout{background:transparent;border:1px solid rgba(255,255,255,0.12)}
+.nav-link.logout{
+  background:#fff;
+  color:#667eea;
+  padding:.5rem 1rem;
+  border-radius:4px;
+  border:none;
+  font-weight:600;
+  transition:all .3s ease;
+}
 
-@media(max-width:768px){.nav-menu{gap:.4rem}}
+.nav-link.logout:hover{background:#f0f0f0}
+
+.nav-dropdown{position:relative}
+
+.counselor-toggle{background:var(--surface);color:var(--primary-600);box-shadow:var(--shadow-sm)}
+
+.counselor-toggle:hover{background:#f0f0f0;transform:none}
+
+.caret{font-size:.7rem;margin-left:.35rem}
+
+.dropdown-menu{
+  position:absolute;
+  right:0;
+  top:calc(100% + .4rem);
+  background:#fff;
+  border-radius:10px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.12);
+  padding:.4rem;
+  min-width:180px;
+  display:flex;
+  flex-direction:column;
+  gap:.25rem;
+  opacity:0;
+  visibility:hidden;
+  transform:translateY(-4px);
+  transition:all .18s ease;
+  z-index:10;
+}
+
+.nav-dropdown:hover .dropdown-menu,
+.nav-dropdown:focus-within .dropdown-menu{
+  opacity:1;
+  visibility:visible;
+  transform:translateY(0);
+}
+
+.dropdown-item{
+  background:transparent;
+  color:#111;
+  border:0;
+  padding:.55rem .65rem;
+  text-align:left;
+  border-radius:8px;
+  font-weight:600;
+  display:flex;
+  align-items:center;
+  gap:.5rem;
+  cursor:pointer;
+}
+
+.dropdown-item:hover{background:rgba(102,126,234,0.12)}
+
+.dropdown-icon{font-size:1rem}
+
+@media(max-width:768px){.nav-menu{gap:.6rem}}

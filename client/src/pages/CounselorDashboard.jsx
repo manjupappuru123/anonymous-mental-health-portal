@@ -6,7 +6,7 @@ import '../styles/CounselorDashboard.css';
 
 export default function CounselorDashboard() {
   const navigate = useNavigate();
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const [issues, setIssues] = useState([]);
   const [filteredIssues, setFilteredIssues] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -90,10 +90,6 @@ export default function CounselorDashboard() {
     }
   };
 
-  const handleLogout = () => {
-    logout();
-    navigate('/');
-  };
 
   if (loading) {
     return (
@@ -105,16 +101,6 @@ export default function CounselorDashboard() {
 
   return (
     <div className="dashboard-container">
-      <nav className="dashboard-nav">
-        <div className="nav-content">
-          <h1>Counselor Dashboard</h1>
-          <div className="nav-user">
-            <span>Welcome, {user.name}</span>
-            <button onClick={handleLogout} className="logout-btn">Logout</button>
-          </div>
-        </div>
-      </nav>
-
       <div className="dashboard-content">
         {error && <div className="error-message">{error}</div>}
 
