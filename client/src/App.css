@@ -65,6 +65,8 @@ select {
   border: 1px solid #ddd;
   border-radius: 4px;
   transition: all 0.3s ease;
+  background-color: #fff;
+  color: #111;
 }
 
 input:focus,
