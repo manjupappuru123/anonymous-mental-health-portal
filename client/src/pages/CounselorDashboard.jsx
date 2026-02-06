@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { CheckCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { issueAPI, counselorAPI } from '../services/api';
@@ -59,6 +60,8 @@ export default function CounselorDashboard() {
     }
     setFilteredIssues(filtered);
   };
+
+  const toKebab = (value) => value.toLowerCase().replace(/\s+/g, '-');
 
   const handleAssignIssue = async (issueId) => {
     try {
@@ -154,7 +157,7 @@ export default function CounselorDashboard() {
                 <div key={issue._id} className="issue-item">
                   <div className="issue-header">
                     <h3>{issue.title}</h3>
-                    <span className={`status-badge status-${issue.status.toLowerCase()}`}>
+                    <span className={`status-badge status-${toKebab(issue.status)}`}>
                       {issue.status}
                     </span>
                   </div>
@@ -182,7 +185,10 @@ export default function CounselorDashboard() {
                       </button>
                     )}
                     {issue.status === 'Resolved' && (
-                      <span className="resolved-badge">✓ Resolved</span>
+                      <span className="resolved-badge">
+                        <CheckCircle aria-hidden="true" />
+                        Resolved
+                      </span>
                     )}
                   </div>
                 </div>

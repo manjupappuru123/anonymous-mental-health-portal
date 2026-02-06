@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { Check, Circle, Copy, Info } from 'lucide-react';
 import { issueAPI } from '../services/api';
 import '../styles/ViewResponse.css';
 
@@ -27,35 +28,7 @@ export default function ViewResponse() {
     }
   };
 
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'Open':
-        return '#ff9800';
-      case 'Assigned':
-        return '#2196f3';
-      case 'In Progress':
-        return '#9c27b0';
-      case 'Resolved':
-        return '#4caf50';
-      default:
-        return '#666';
-    }
-  };
-
-  const getSeverityColor = (severity) => {
-    switch (severity) {
-      case 'Low':
-        return '#4caf50';
-      case 'Medium':
-        return '#ff9800';
-      case 'High':
-        return '#f44336';
-      case 'Critical':
-        return '#9c27b0';
-      default:
-        return '#666';
-    }
-  };
+  const toKebab = (value) => value.toLowerCase().replace(/\s+/g, '-');
 
   if (loading) {
     return (
@@ -81,6 +54,9 @@ export default function ViewResponse() {
     );
   }
 
+  const statusClass = `status-${toKebab(issue.status)}`;
+  const severityClass = `severity-${toKebab(issue.severity)}`;
+
   return (
     <div className="view-response-container">
       <div className="response-card">
@@ -90,7 +66,8 @@ export default function ViewResponse() {
             <span className="label">Anonymous ID:</span>
             <span className="id">{anonId}</span>
             <button onClick={() => navigator.clipboard.writeText(anonId)} className="copy-btn">
-              📋 Copy
+              <Copy aria-hidden="true" />
+              Copy
             </button>
           </div>
         </div>
@@ -108,14 +85,14 @@ export default function ViewResponse() {
 
           <div className="detail-row">
             <span className="label">Severity:</span>
-            <span className="badge badge-severity" style={{ backgroundColor: getSeverityColor(issue.severity) }}>
+            <span className={`badge badge-severity ${severityClass}`}>
               {issue.severity}
             </span>
           </div>
 
           <div className="detail-row">
             <span className="label">Status:</span>
-            <span className="badge badge-status" style={{ backgroundColor: getStatusColor(issue.status) }}>
+            <span className={`badge badge-status ${statusClass}`}>
               {issue.status}
             </span>
           </div>
@@ -158,7 +135,7 @@ export default function ViewResponse() {
         <div className="timeline">
           <h3>Timeline</h3>
           <div className="timeline-item">
-            <div className="timeline-status" style={{ backgroundColor: getStatusColor('Open') }}>✓</div>
+            <div className="timeline-status complete"><Check aria-hidden="true" /></div>
             <div className="timeline-text">
               <strong>Submitted</strong>
               <p>{new Date(issue.createdAt).toLocaleDateString()}</p>
@@ -166,8 +143,8 @@ export default function ViewResponse() {
           </div>
 
           <div className="timeline-item">
-            <div className="timeline-status" style={{ backgroundColor: issue.status !== 'Open' ? getStatusColor(issue.status) : '#ccc' }}>
-              {issue.status !== 'Open' ? '✓' : '●'}
+            <div className={`timeline-status ${issue.status !== 'Open' ? 'complete' : 'pending'}`}>
+              {issue.status !== 'Open' ? <Check aria-hidden="true" /> : <Circle aria-hidden="true" />}
             </div>
             <div className="timeline-text">
               <strong>Status Update</strong>
@@ -177,7 +154,7 @@ export default function ViewResponse() {
         </div>
 
         <div className="info-box">
-          <h4>ℹ️ How It Works</h4>
+          <h4 className="info-title"><Info aria-hidden="true" /> How It Works</h4>
           <ol>
             <li>Your issue is reviewed by our counseling team</li>
             <li>A suitable counselor is assigned based on the issue category</li>

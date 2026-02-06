@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { Brain, ChevronDown, LogIn, UserPlus } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import '../styles/Navbar.css';
 
@@ -15,7 +16,12 @@ export default function Navbar() {
     <nav className="navbar">
       <div className="navbar-content">
         <div className="navbar-brand">
-          <h2 onClick={() => navigate(user ? '/counselor-dashboard' : '/')}>🧠 Mental Health Portal</h2>
+          <h2 onClick={() => navigate(user ? '/counselor-dashboard' : '/')}>
+            <span className="nav-icon">
+              <Brain aria-hidden="true" />
+              Mental Health Portal
+            </span>
+          </h2>
         </div>
 
         <div className="nav-menu">
@@ -32,15 +38,15 @@ export default function Navbar() {
               <button onClick={() => navigate('/resources')} className="nav-link">Resources</button>
               <div className="nav-dropdown">
                 <button type="button" className="nav-link counselor-toggle">
-                  I'm a counselor <span className="caret">▼</span>
+                  I'm a counselor <ChevronDown className="caret" aria-hidden="true" />
                 </button>
                 <div className="dropdown-menu">
                   <button onClick={() => navigate('/counselor-login')} className="dropdown-item">
-                    <span className="dropdown-icon">🔐</span>
+                    <span className="dropdown-icon"><LogIn aria-hidden="true" /></span>
                     Login
                   </button>
                   <button onClick={() => navigate('/counselor-register')} className="dropdown-item">
-                    <span className="dropdown-icon">📝</span>
+                    <span className="dropdown-icon"><UserPlus aria-hidden="true" /></span>
                     Register
                   </button>
                 </div>

@@ -1,11 +1,11 @@
 .submit-issue-container{max-width:800px;margin:2rem auto;padding:0 1rem}
-.submit-issue-card{background:var(--card-bg);padding:2rem;border-radius:12px;box-shadow:var(--shadow-sm)}
+.submit-issue-card{background:var(--card-bg);padding:2rem;border-radius:12px;box-shadow:var(--shadow-sm);border:1px solid var(--border-subtle)}
 
-.submit-issue-card h1{font-size:1.75rem;margin-bottom:.5rem;text-align:center;color:#111}
+.submit-issue-card h1{font-size:1.75rem;margin-bottom:.5rem;text-align:center;color:var(--text-primary)}
 
 .submit-issue-card .subtitle {
   text-align: center;
-  color: #666;
+  color: var(--text-muted);
   margin-bottom: 2rem;
   font-size: 1rem;
 }
@@ -22,7 +22,7 @@
   display: block;
   margin-bottom: 0.5rem;
   font-weight: 600;
-  color: #333;
+  color: var(--text-primary);
 }
 
 .form-group input,
@@ -39,11 +39,11 @@
 .form-group small {
   display: block;
   margin-top: 0.25rem;
-  color: #999;
+  color: var(--text-subtle);
   font-size: 0.85rem;
 }
 
-.submit-btn{width:100%;padding:.75rem;background:linear-gradient(90deg,var(--primary-500),var(--primary-600));color:white;border:none;border-radius:10px;font-size:1rem;font-weight:700;cursor:pointer;transition:all .18s ease}
+.submit-btn{width:100%;padding:.75rem;background:linear-gradient(90deg,var(--brand-500),var(--brand-600));color:white;border:none;border-radius:10px;font-size:1rem;font-weight:700;cursor:pointer;transition:all .18s ease}
 
 .submit-btn:hover:not(:disabled) {
   opacity: 0.9;
@@ -56,50 +56,72 @@
 }
 
 .success-message {
-  background-color: #e8f5e9;
-  border: 2px solid #4caf50;
+  background-color: var(--success-bg);
+  border: 2px solid var(--success-500);
   padding: 1.5rem;
   border-radius: 8px;
   text-align: center;
 }
 
 .success-message h3 {
-  color: #4caf50;
+  color: var(--success-600);
   margin-bottom: 1rem;
   font-size: 1.2rem;
 }
 
+.message-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.message-title svg {
+  width: 20px;
+  height: 20px;
+}
+
 .success-message p {
   margin: 0.5rem 0;
-  color: #333;
+  color: var(--text-primary);
 }
 
 .success-message strong {
   font-weight: 600;
-  color: #2e7d32;
+  color: var(--success-600);
 }
 
 .save-id {
-  background-color: #fff9c4;
+  background-color: var(--warning-bg);
   padding: 0.5rem;
   border-radius: 4px;
-  color: #f57f17;
+  color: var(--warning-600);
   margin: 1rem 0;
 }
 
 .redirecting {
   font-size: 0.9rem;
-  color: #666;
+  color: var(--text-muted);
   font-style: italic;
   margin-top: 1rem;
 }
 
-.privacy-notice{background:linear-gradient(90deg,rgba(236,252,235,1),rgba(245,249,255,1));padding:1rem;border-radius:10px;border-left:4px solid var(--success);margin-top:1.5rem}
+.privacy-notice{background:var(--success-bg);padding:1rem;border-radius:10px;border-left:4px solid var(--success-600);margin-top:1.5rem}
 
 .privacy-notice h4 {
-  color: #2e7d32;
+  color: var(--success-600);
   margin-bottom: 1rem;
   font-size: 1.1rem;
+}
+
+.notice-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.notice-title svg {
+  width: 20px;
+  height: 20px;
 }
 
 .privacy-notice ul {
@@ -112,16 +134,19 @@
   padding: 0.5rem 0;
   padding-left: 1.5rem;
   position: relative;
-  color: #333;
+  color: var(--text-primary);
   line-height: 1.6;
 }
 
 .privacy-notice li:before {
-  content: '✓';
+  content: '';
   position: absolute;
   left: 0;
-  color: #4caf50;
-  font-weight: bold;
+  top: 0.95rem;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--success-500);
 }
 
 @media (max-width: 768px) {

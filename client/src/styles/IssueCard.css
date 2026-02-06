@@ -1,16 +1,17 @@
 .issue-card {
-  background: white;
+  background: var(--surface-0);
   padding: 1.5rem;
   border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow-sm);
   cursor: pointer;
   transition: all 0.3s ease;
-  border-left: 4px solid #667eea;
+  border: 1px solid var(--border-subtle);
+  border-left: 4px solid var(--brand-500);
 }
 
 .issue-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-md);
 }
 
 .card-header {
@@ -23,7 +24,7 @@
 
 .card-header h3 {
   margin: 0;
-  color: #333;
+  color: var(--text-primary);
   flex: 1;
 }
 
@@ -37,15 +38,20 @@
   white-space: nowrap;
 }
 
+.status-open { background-color: var(--warning-600); }
+.status-assigned { background-color: var(--info-600); }
+.status-in-progress { background-color: var(--accent-500); }
+.status-resolved { background-color: var(--success-600); }
+
 .card-category {
-  color: #667eea;
+  color: var(--brand-600);
   font-weight: 600;
   font-size: 0.9rem;
   margin: 0.5rem 0;
 }
 
 .card-description {
-  color: #666;
+  color: var(--text-muted);
   line-height: 1.6;
   margin: 0.75rem 0;
   font-size: 0.95rem;
@@ -57,14 +63,14 @@
   align-items: center;
   margin-top: 1rem;
   padding-top: 1rem;
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--border-subtle);
   font-size: 0.9rem;
-  color: #999;
+  color: var(--text-subtle);
 }
 
 .anon-id {
   font-family: monospace;
-  color: #667eea;
+  color: var(--brand-600);
 }
 
 .severity {

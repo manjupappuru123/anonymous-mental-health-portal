@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { CheckCircle, ShieldCheck } from 'lucide-react';
 import { issueAPI } from '../services/api';
 import '../styles/SubmitIssue.css';
 
@@ -67,7 +68,10 @@ export default function SubmitIssue() {
         {error && <div className="error-message">{error}</div>}
         {successAnonId && (
           <div className="success-message">
-            <h3>✓ Issue submitted successfully!</h3>
+            <h3 className="message-title">
+              <CheckCircle aria-hidden="true" />
+              Issue submitted successfully!
+            </h3>
             <p>Your Anonymous ID: <strong>{successAnonId}</strong></p>
             <p className="save-id">Save this ID to track your issue status</p>
             <p className="redirecting">Redirecting to your issue...</p>
@@ -141,7 +145,10 @@ export default function SubmitIssue() {
         )}
 
         <div className="privacy-notice">
-          <h4>🔒 Your Privacy is Protected</h4>
+          <h4 className="notice-title">
+            <ShieldCheck aria-hidden="true" />
+            Your Privacy is Protected
+          </h4>
           <ul>
             <li>Complete anonymity - no personal information stored</li>
             <li>Your identity cannot be traced</li>
