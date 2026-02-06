@@ -1,11 +1,9 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { CheckCircle, ShieldCheck } from 'lucide-react';
+import { CheckCircle, ShieldCheck, Copy, Download, Bookmark } from 'lucide-react';
 import { issueAPI } from '../services/api';
 import '../styles/SubmitIssue.css';
 
 export default function SubmitIssue() {
-  const navigate = useNavigate();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('Academic');
@@ -13,11 +11,17 @@ export default function SubmitIssue() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [successAnonId, setSuccessAnonId] = useState('');
+  const [chatLink, setChatLink] = useState('');
+  const [copyStatus, setCopyStatus] = useState('');
+  const [showBookmarkHint, setShowBookmarkHint] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setSuccessAnonId('');
+    setChatLink('');
+    setCopyStatus('');
+    setShowBookmarkHint(false);
 
     if (!title || !description || !category) {
       setError('Please fill in all required fields');
@@ -44,19 +48,61 @@ export default function SubmitIssue() {
       });
 
       setSuccessAnonId(response.data.anonId);
+      const link = response.data.chat?.link || '';
+      const absoluteLink = link
+        ? (link.startsWith('http') ? link : `${window.location.origin}${link}`)
+        : '';
+      setChatLink(absoluteLink);
       setTitle('');
       setDescription('');
       setCategory('Academic');
       setSeverity('Medium');
-
-      setTimeout(() => {
-        navigate(`/view-response/${response.data.anonId}`);
-      }, 2000);
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to submit issue');
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleCopy = async () => {
+    if (!chatLink) {
+      return;
+    }
+    setCopyStatus('');
+    try {
+      if (navigator?.clipboard?.writeText) {
+        await navigator.clipboard.writeText(chatLink);
+      } else {
+        const tempInput = document.createElement('textarea');
+        tempInput.value = chatLink;
+        tempInput.setAttribute('readonly', '');
+        tempInput.style.position = 'absolute';
+        tempInput.style.left = '-9999px';
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempInput);
+      }
+      setCopyStatus('Copied to clipboard');
+    } catch {
+      setCopyStatus('Copy failed. Please select and copy manually.');
+    }
+  };
+
+  const handleDownload = () => {
+    if (!chatLink) {
+      return;
+    }
+    const content = `Student Chat Link\n${chatLink}\n\nKeep this link private. Anyone with this link can access the chat.`;
+    const blob = new Blob([content], { type: 'text/plain' });
+    const url = window.URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = 'student-chat-link.txt';
+    document.body.appendChild(anchor);
+    anchor.click();
+    document.body.removeChild(anchor);
+    window.URL.revokeObjectURL(url);
   };
 
   return (
@@ -72,9 +118,58 @@ export default function SubmitIssue() {
               <CheckCircle aria-hidden="true" />
               Issue submitted successfully!
             </h3>
-            <p>Your Anonymous ID: <strong>{successAnonId}</strong></p>
-            <p className="save-id">Save this ID to track your issue status</p>
-            <p className="redirecting">Redirecting to your issue...</p>
+            <div className="confirmation-card">
+              <div className="confirmation-row">
+                <span>Anonymous ID</span>
+                <strong>{successAnonId}</strong>
+              </div>
+              <div className="confirmation-row">
+                <span>Private Chat Link</span>
+                <div className="chat-link-wrapper">
+                  <input
+                    type="text"
+                    value={chatLink}
+                    readOnly
+                    aria-label="Private chat link"
+                  />
+                </div>
+              </div>
+              <div className="confirmation-actions">
+                <button
+                  type="button"
+                  className="icon-btn tooltip-button"
+                  data-tooltip="Copy chat link"
+                  onClick={handleCopy}
+                >
+                  <Copy aria-hidden="true" />
+                </button>
+                <button
+                  type="button"
+                  className="icon-btn tooltip-button"
+                  data-tooltip="Download link as .txt"
+                  onClick={handleDownload}
+                >
+                  <Download aria-hidden="true" />
+                </button>
+                <button
+                  type="button"
+                  className="icon-btn tooltip-button"
+                  data-tooltip="How to bookmark"
+                  onClick={() => setShowBookmarkHint((prev) => !prev)}
+                >
+                  <Bookmark aria-hidden="true" />
+                </button>
+              </div>
+              {copyStatus && <p className="copy-status">{copyStatus}</p>}
+              {showBookmarkHint && (
+                <div className="bookmark-hint">
+                  <p>Windows/Linux: Ctrl + D</p>
+                  <p>macOS: Cmd + D</p>
+                  <p>Mobile: Use your browser menu to bookmark</p>
+                </div>
+              )}
+              <p className="save-id">Keep this link safe. It cannot be recovered later.</p>
+            </div>
           </div>
         )}
 

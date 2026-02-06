@@ -39,6 +39,7 @@ An anonymous mental health portal that provides:
 - **JWT** - Authentication
 - **bcryptjs** - Password hashing
 - **CORS** - Cross-origin resource sharing
+- **Socket.IO** - Real-time chat updates
 
 ---
 
@@ -76,9 +77,11 @@ cp .env.example .env
 Edit `.env` and configure:
 ```env
 PORT=5000
+CLIENT_ORIGIN=http://localhost:5173
 MONGODB_URI=mongodb://localhost:27017/mental-health-portal
 JWT_SECRET=your_secret_key_here
 JWT_EXPIRE=7d
+STUDENT_CHAT_TOKEN_SECRET=your_student_chat_token_secret
 EMAIL_ENABLED=false
 EMAIL_FROM=no-reply@mental-health-portal.local
 EMAIL_HOST=smtp.example.com
@@ -125,6 +128,7 @@ cp .env.example .env
 Edit `.env`:
 ```env
 VITE_API_URL=http://localhost:5000/api
+VITE_SOCKET_URL=http://localhost:5000
 ```
 
 #### 3d. Start development server
@@ -155,6 +159,9 @@ Client will run on: **http://localhost:5173**
    - Learn about specializations
    - Understand the process
 
+4. **Real-Time Chat Updates**
+   - New messages appear instantly within an issue thread
+
 ### For Counselors
 
 1. **Authentication**
@@ -173,6 +180,9 @@ Client will run on: **http://localhost:5173**
    - Provide responses
    - Mark issues as resolved
 
+4. **Real-Time Chat Updates**
+   - New student messages appear instantly in assigned threads
+
 ---
 
 ## API Endpoints
@@ -189,6 +199,27 @@ Client will run on: **http://localhost:5173**
 - `PUT /:issueId/assign` - Assign issue (protected)
 - `PUT /:issueId/response` - Add counselor response (protected)
 - `DELETE /:issueId` - Delete issue (protected)
+
+### Chat Routes (`/api/chat`)
+Student token-link (no login required):
+- `GET /student/:issueId?t=<token>` - Get chat thread metadata
+- `GET /student/:issueId/messages?t=<token>` - Fetch messages
+- `POST /student/:issueId/messages?t=<token>` - Send message
+
+Counselor (JWT required):
+- `GET /counselor/threads` - List assigned chat threads
+- `GET /counselor/:issueId/messages` - Fetch messages for assigned issue
+- `POST /counselor/:issueId/messages` - Send counselor message for assigned issue
+
+### Socket Events (Socket.IO)
+- `join_issue`
+  - Payload: `{ "issueId": "<issueId>", "token": "<studentToken>" }` for students
+  - Payload: `{ "issueId": "<issueId>" }` for counselors (JWT in `Authorization: Bearer <token>` header)
+- `leave_issue` (optional)
+  - Payload: `{ "issueId": "<issueId>" }`
+- `message:new` (server -> clients)
+  - Emitted after a message is successfully saved
+  - Payload matches REST message shape
 
 ### Counselor Routes (`/api/counselors`)
 - `GET /` - Get all counselors
@@ -231,6 +262,8 @@ Client will run on: **http://localhost:5173**
   status: String (Open/Assigned/In Progress/Resolved),
   assignedCounselor: ObjectId (ref: Counselor),
   response: String,
+  studentChatTokenHash: String (hashed token, never returned),
+  studentChatTokenCreatedAt: Date,
   createdAt: Date,
   updatedAt: Date
 }
@@ -244,6 +277,17 @@ Client will run on: **http://localhost:5173**
   issue: ObjectId (ref: Issue),
   isRead: Boolean,
   readAt: Date,
+  createdAt: Date
+}
+```
+
+### Message Model
+```javascript
+{
+  issueId: ObjectId (ref: Issue),
+  senderType: String (student | counselor),
+  senderCounselorId: ObjectId (ref: Counselor, nullable),
+  body: String,
   createdAt: Date
 }
 ```
@@ -328,7 +372,11 @@ curl -X POST http://localhost:5000/api/issues/submit \
 {
   "success": true,
   "anonId": "ANON-ABC123-XYZ789",
-  "issue": { ... }
+  "issue": { ... },
+  "chat": {
+    "link": "/student/chat/<issueId>?t=<token>",
+    "token": "<one-time-student-token>"
+  }
 }
 ```
 
@@ -438,7 +486,6 @@ npm install
 ## Features Roadmap
 
 - [ ] Email notifications for counselors
-- [ ] Real-time chat between student and counselor
 - [ ] Video call integration
 - [ ] Resource library with articles
 - [ ] Appointment scheduling

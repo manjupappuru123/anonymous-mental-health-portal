@@ -24,6 +24,7 @@
 - Backend (Express) exposes `/api/*` routes and applies auth middleware for protected endpoints.
 - MongoDB stores:
   - `issues` documents keyed by `anonId`.
+  - `messages` documents tied to issues for anonymous chat.
   - `counselors` documents for authenticated users.
   - `notifications` documents for counselor in-app notifications.
 
@@ -44,6 +45,9 @@
 - Anonymous ID system:
   - Protects student privacy by avoiding personal data collection in issues.
   - Trade-off: no direct contact channel; all follow-up uses `anonId`.
+- Student chat token-link:
+  - Each issue gets a one-time returned student access token.
+  - Only the hashed token is stored in MongoDB.
 - Stateless JWT auth:
   - Simplifies horizontal scaling.
   - Trade-off: token revocation is not built-in.
@@ -59,6 +63,7 @@
   - MongoDB with Mongoose.
   - JWT + bcryptjs for authentication.
   - CORS enabled globally.
+  - Socket.IO for real-time chat message updates.
 - Frontend:
   - React 19 + React Router.
   - Vite build system.
@@ -69,20 +74,28 @@
   - `src/pages/`: route-level pages (Home, SubmitIssue, ViewResponse, Dashboard, etc.).
   - `src/components/`: reusable UI components.
   - `src/services/api.js`: Axios setup and API wrappers.
+  - `src/services/socket.js`: Socket.IO client initialization for real-time chat updates.
   - `src/context/AuthContext.jsx`: auth state, login/register, token persistence.
   - `src/styles/`: CSS for pages/components.
 - `server/`
   - `server.js`: app bootstrap, middleware, routes, health check.
   - `config/db.js`: MongoDB connection.
   - `models/`: Mongoose schemas (`Counselor`, `Issue`, `Notification`).
+  - `models/Message.js`: chat messages tied to issues.
   - `controllers/`: route logic for auth, issues, counselors, notifications.
+  - `controllers/chatController.js`: token-link student chat + counselor chat APIs.
+  - `services/chatService.js`: shared chat validation, authorization, and persistence helpers.
   - `routes/`: Express route definitions, including notification routes for counselor alerts.
+  - `routes/chatRoutes.js`: chat API routes (`/api/chat`).
   - `middleware/`: auth and error handling.
+  - `socket/`: Socket.IO server initialization and chat room events.
   - `utils/`: helper utilities like anonymous ID generation and email delivery.
+  - `utils/studentChatToken.js`: token generation and hashing.
 
 ## Architectural Constraints (Must Respect)
 - Issues must not store student-identifying personal data.
 - `anonId` is the only key students use to retrieve status and responses.
+- Student chat access uses a token-link; only token hashes are stored.
 - All protected routes require JWT via `Authorization: Bearer <token>`.
 - Client must read API base URL from `VITE_API_URL` (fallback to `http://localhost:5000/api`).
 - `localStorage` is the single source of client auth persistence.
@@ -95,7 +108,6 @@
 - Indexing on `issues.anonId` and `counselors.email` is required for performance and uniqueness.
 
 ## Known Limitations / Non-Goals
-- No real-time chat or live updates (REST only).
 - No admin role or moderation workflows.
 - No token revocation or refresh flow.
 - No SMS notifications.

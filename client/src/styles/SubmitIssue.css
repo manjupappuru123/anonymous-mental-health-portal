@@ -95,14 +95,136 @@
   padding: 0.5rem;
   border-radius: 4px;
   color: var(--warning-600);
-  margin: 1rem 0;
+  margin: 1rem 0 0;
 }
 
-.redirecting {
-  font-size: 0.9rem;
+.confirmation-card {
+  background: var(--surface-0);
+  border: 1px dashed var(--border-subtle);
+  border-radius: 10px;
+  padding: 1.5rem;
+  text-align: left;
+  margin-top: 1.5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.confirmation-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.confirmation-row:last-of-type {
+  border-bottom: none;
+}
+
+.confirmation-row span {
   color: var(--text-muted);
-  font-style: italic;
+  font-size: 0.95rem;
+}
+
+.confirmation-row strong {
+  color: var(--text-primary);
+  font-weight: 600;
+  text-align: right;
+}
+
+.chat-link-wrapper {
+  flex: 1;
+}
+
+.chat-link-wrapper input {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  border-radius: 6px;
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-2);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+
+.confirmation-actions {
+  display: flex;
+  gap: 0.75rem;
   margin-top: 1rem;
+}
+
+.icon-btn {
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-2);
+  color: var(--text-primary);
+  border-radius: 8px;
+  padding: 0.55rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.icon-btn:hover {
+  background: var(--surface-1);
+  border-color: var(--brand-400);
+}
+
+.icon-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.copy-status {
+  margin-top: 0.75rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.bookmark-hint {
+  margin-top: 0.75rem;
+  background: var(--surface-2);
+  border-radius: 8px;
+  padding: 0.75rem;
+  border: 1px solid var(--border-subtle);
+}
+
+.bookmark-hint p {
+  margin: 0.2rem 0;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+
+.tooltip-button::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--text-primary);
+  color: var(--surface-0);
+  padding: 0.35rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.tooltip-button::before {
+  content: '';
+  position: absolute;
+  bottom: calc(100% + 2px);
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px 6px 0;
+  border-style: solid;
+  border-color: var(--text-primary) transparent transparent;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.tooltip-button:hover::after,
+.tooltip-button:hover::before {
+  opacity: 1;
 }
 
 .privacy-notice{background:var(--success-bg);padding:1rem;border-radius:10px;border-left:4px solid var(--success-600);margin-top:1.5rem}
@@ -156,5 +278,18 @@
 
   .submit-issue-card h1 {
     font-size: 1.5rem;
+  }
+
+  .confirmation-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .confirmation-row strong {
+    text-align: left;
+  }
+
+  .confirmation-actions {
+    flex-wrap: wrap;
   }
 }

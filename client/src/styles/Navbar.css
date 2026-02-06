@@ -4,9 +4,17 @@
   padding:.75rem 1rem;
   box-shadow:var(--shadow-sm);
   border-bottom:1px solid var(--border-subtle);
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  height:var(--navbar-height);
+  z-index:1100;
+  display:flex;
+  align-items:center;
 }
 
-.navbar-content{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
+.navbar-content{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;width:100%}
 
 .navbar-brand h2{cursor:pointer;font-size:1.25rem;margin:0;font-weight:700}
 

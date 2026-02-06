@@ -52,4 +52,15 @@ export const notificationAPI = {
   markAllAsRead: () => api.put('/notifications/read-all')
 };
 
+// Chat endpoints
+export const chatAPI = {
+  getStudentThread: (issueId, token) => api.get(`/chat/student/${issueId}`, { params: { t: token } }),
+  getStudentMessages: (issueId, token) => api.get(`/chat/student/${issueId}/messages`, { params: { t: token } }),
+  createStudentMessage: (issueId, token, body) =>
+    api.post(`/chat/student/${issueId}/messages`, { body }, { params: { t: token } }),
+  getCounselorThreads: () => api.get('/chat/counselor/threads'),
+  getCounselorMessages: (issueId) => api.get(`/chat/counselor/${issueId}/messages`),
+  createCounselorMessage: (issueId, body) => api.post(`/chat/counselor/${issueId}/messages`, { body })
+};
+
 export default api;

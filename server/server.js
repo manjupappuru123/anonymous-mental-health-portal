@@ -1,7 +1,9 @@
 const express = require('express');
+const http = require('http');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
+const { initSocketServer } = require('./socket');
 
 dotenv.config();
 
@@ -20,6 +22,7 @@ app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/issues', require('./routes/issueRoutes'));
 app.use('/api/counselors', require('./routes/counselorRoutes'));
 app.use('/api/notifications', require('./routes/notificationRoutes'));
+app.use('/api/chat', require('./routes/chatRoutes'));
 
 // Error handling middleware
 app.use(require('./middleware/errorMiddleware'));
@@ -31,6 +34,9 @@ app.get('/api/health', (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
+const server = http.createServer(app);
+initSocketServer(server);
+
+server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

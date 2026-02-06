@@ -158,7 +158,6 @@ export default function Navbar() {
         <div className="nav-menu">
           {user ? (
             <>
-              <span className="nav-welcome">Welcome, {user.name}</span>
               <div className="nav-notifications" ref={notificationRef}>
                 <button
                   type="button"

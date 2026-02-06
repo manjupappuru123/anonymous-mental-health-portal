@@ -9,6 +9,7 @@ import SubmitIssue from './pages/SubmitIssue';
 import ViewResponse from './pages/ViewResponse';
 import CounselorDashboard from './pages/CounselorDashboard';
 import Resources from './pages/Resources';
+import StudentChat from './pages/StudentChat';
 import './App.css';
 
 function ProtectedRoute({ children }) {
@@ -20,7 +21,7 @@ function ProtectedRoute({ children }) {
 
 function AppContent() {
   return (
-    <Router>
+    <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <div className="app-wrapper">
         <Navbar />
         <div className="app-content">
@@ -30,6 +31,7 @@ function AppContent() {
             <Route path="/counselor-register" element={<CounselorRegister />} />
             <Route path="/submit-issue" element={<SubmitIssue />} />
             <Route path="/view-response/:anonId" element={<ViewResponse />} />
+            <Route path="/student/chat/:issueId" element={<StudentChat />} />
             <Route path="/resources" element={<Resources />} />
             <Route
               path="/counselor-dashboard"

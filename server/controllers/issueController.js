@@ -3,6 +3,7 @@ const Issue = require('../models/Issue');
 const Counselor = require('../models/Counselor');
 const Notification = require('../models/Notification');
 const generateAnonId = require('../utils/generateAnonId');
+const { generateStudentToken, hashStudentToken } = require('../utils/studentChatToken');
 const { sendIssueAssignedEmail } = require('../utils/emailService');
 
 // Submit Issue
@@ -15,6 +16,8 @@ exports.submitIssue = async (req, res, next) => {
     }
 
     const anonId = generateAnonId();
+    const studentChatToken = generateStudentToken();
+    const studentChatTokenHash = hashStudentToken(studentChatToken);
 
     const issue = await Issue.create({
       anonId,
@@ -22,13 +25,20 @@ exports.submitIssue = async (req, res, next) => {
       description,
       category,
       severity: severity || 'Medium',
-      status: 'Open'
+      status: 'Open',
+      studentChatTokenHash,
+      studentChatTokenCreatedAt: new Date()
     });
+    issue.studentChatTokenHash = undefined;
 
     res.status(201).json({
       success: true,
       anonId,
-      issue
+      issue,
+      chat: {
+        link: `/student/chat/${issue._id}?t=${studentChatToken}`,
+        token: studentChatToken
+      }
     });
   } catch (error) {
     next(error);

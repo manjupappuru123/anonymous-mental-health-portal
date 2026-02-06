@@ -38,6 +38,15 @@ const issueSchema = new mongoose.Schema({
     type: String,
     default: null
   },
+  studentChatTokenHash: {
+    type: String,
+    default: null,
+    select: false
+  },
+  studentChatTokenCreatedAt: {
+    type: Date,
+    default: null
+  },
   createdAt: {
     type: Date,
     default: Date.now
