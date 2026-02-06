@@ -25,6 +25,7 @@
 - MongoDB stores:
   - `issues` documents keyed by `anonId`.
   - `counselors` documents for authenticated users.
+  - `notifications` documents for counselor in-app notifications.
 
 ### Data Flow (Core)
 - Student submits issue:
@@ -73,11 +74,11 @@
 - `server/`
   - `server.js`: app bootstrap, middleware, routes, health check.
   - `config/db.js`: MongoDB connection.
-  - `models/`: Mongoose schemas (`Counselor`, `Issue`).
-  - `controllers/`: route logic for auth, issues, counselors.
-  - `routes/`: Express route definitions.
+  - `models/`: Mongoose schemas (`Counselor`, `Issue`, `Notification`).
+  - `controllers/`: route logic for auth, issues, counselors, notifications.
+  - `routes/`: Express route definitions, including notification routes for counselor alerts.
   - `middleware/`: auth and error handling.
-  - `utils/`: helper utilities like anonymous ID generation.
+  - `utils/`: helper utilities like anonymous ID generation and email delivery.
 
 ## Architectural Constraints (Must Respect)
 - Issues must not store student-identifying personal data.
@@ -97,11 +98,10 @@
 - No real-time chat or live updates (REST only).
 - No admin role or moderation workflows.
 - No token revocation or refresh flow.
-- No email/SMS notifications.
+- No SMS notifications.
 - Privacy is achieved through anonymity, not through end-to-end encryption.
 
 ## Documentation Pointers
 - `README.md`: setup, usage, endpoints, and schema.
 - `ARCHITECTURE.md`: diagrams and flowcharts.
 - `QUICKSTART.md`: short setup path.
-

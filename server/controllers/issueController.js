@@ -1,5 +1,9 @@
+const mongoose = require('mongoose');
 const Issue = require('../models/Issue');
+const Counselor = require('../models/Counselor');
+const Notification = require('../models/Notification');
 const generateAnonId = require('../utils/generateAnonId');
+const { sendIssueAssignedEmail } = require('../utils/emailService');
 
 // Submit Issue
 exports.submitIssue = async (req, res, next) => {
@@ -77,14 +81,59 @@ exports.assignIssue = async (req, res, next) => {
     const { issueId } = req.params;
     const { counselorId } = req.body;
 
+    if (!mongoose.Types.ObjectId.isValid(issueId)) {
+      return res.status(400).json({ success: false, message: 'Invalid issue id' });
+    }
+
+    if (!counselorId) {
+      return res.status(400).json({ success: false, message: 'Counselor ID is required' });
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(counselorId)) {
+      return res.status(400).json({ success: false, message: 'Invalid counselor id' });
+    }
+
     let issue = await Issue.findById(issueId);
     if (!issue) {
       return res.status(404).json({ success: false, message: 'Issue not found' });
     }
 
+    const counselor = await Counselor.findById(counselorId);
+    if (!counselor || !counselor.isActive) {
+      return res.status(404).json({ success: false, message: 'Counselor not found' });
+    }
+
+    const previousAssignedCounselor = issue.assignedCounselor;
+    const previousStatus = issue.status;
+    const alreadyAssigned =
+      issue.assignedCounselor && issue.assignedCounselor.toString() === counselorId;
+
     issue.assignedCounselor = counselorId;
     issue.status = 'Assigned';
     issue = await issue.save();
+
+    if (!alreadyAssigned) {
+      try {
+        await Notification.create({
+          recipientCounselor: counselorId,
+          type: 'IssueAssigned',
+          issue: issue._id
+        });
+      } catch (notificationError) {
+        issue.assignedCounselor = previousAssignedCounselor || null;
+        issue.status = previousStatus || 'Open';
+        await issue.save();
+        return next(notificationError);
+      }
+
+      void sendIssueAssignedEmail({
+        to: counselor.email,
+        name: counselor.name,
+        issueId: issue._id.toString()
+      }).catch((emailError) => {
+        console.error('Failed to send assignment email:', emailError.message);
+      });
+    }
 
     res.status(200).json({
       success: true,

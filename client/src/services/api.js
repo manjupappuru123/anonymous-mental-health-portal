@@ -44,4 +44,12 @@ export const counselorAPI = {
   getStats: (counselorId) => api.get(`/counselors/${counselorId}/stats`)
 };
 
+// Notification endpoints
+export const notificationAPI = {
+  getNotifications: (params) => api.get('/notifications', { params }),
+  getUnreadCount: () => api.get('/notifications/unread-count'),
+  markAsRead: (notificationId) => api.put(`/notifications/${notificationId}/read`),
+  markAllAsRead: () => api.put('/notifications/read-all')
+};
+
 export default api;

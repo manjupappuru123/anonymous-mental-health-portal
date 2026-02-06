@@ -79,6 +79,14 @@ PORT=5000
 MONGODB_URI=mongodb://localhost:27017/mental-health-portal
 JWT_SECRET=your_secret_key_here
 JWT_EXPIRE=7d
+EMAIL_ENABLED=false
+EMAIL_FROM=no-reply@mental-health-portal.local
+EMAIL_HOST=smtp.example.com
+EMAIL_PORT=587
+EMAIL_SECURE=false
+EMAIL_USER=your_smtp_username
+EMAIL_PASS=your_smtp_password
+BREVO_SMTP_KEY=your_brevo_smtp_key
 ```
 
 **For MongoDB Atlas (Cloud):**
@@ -189,6 +197,12 @@ Client will run on: **http://localhost:5173**
 - `PUT /:counselorId/profile` - Update profile (protected)
 - `GET /:counselorId/stats` - Get statistics (protected)
 
+### Notification Routes (`/api/notifications`)
+- `GET /` - Get notifications for logged-in counselor (protected)
+- `GET /unread-count` - Get unread notification count (protected)
+- `PUT /read-all` - Mark all notifications as read (protected)
+- `PUT /:notificationId/read` - Mark notification as read (protected)
+
 ---
 
 ## Database Schema
@@ -219,6 +233,18 @@ Client will run on: **http://localhost:5173**
   response: String,
   createdAt: Date,
   updatedAt: Date
+}
+```
+
+### Notification Model
+```javascript
+{
+  recipientCounselor: ObjectId (ref: Counselor),
+  type: String (IssueAssigned),
+  issue: ObjectId (ref: Issue),
+  isRead: Boolean,
+  readAt: Date,
+  createdAt: Date
 }
 ```
 

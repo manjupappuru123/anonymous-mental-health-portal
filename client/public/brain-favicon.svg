@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Mental Health Portal">
+  <rect width="64" height="64" rx="14" fill="#5568d3"/>
+  <path
+    d="M24.5 20.5c-3.6 0-6.5 3-6.5 6.6 0 1.5.5 2.9 1.4 4-2.4 1-4 3.4-4 6.1 0 3.6 3 6.6 6.6 6.6h4.5"
+    fill="none"
+    stroke="#ffffff"
+    stroke-width="3"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <path
+    d="M39.5 20.5c3.6 0 6.5 3 6.5 6.6 0 1.5-.5 2.9-1.4 4 2.4 1 4 3.4 4 6.1 0 3.6-3 6.6-6.6 6.6h-4.5"
+    fill="none"
+    stroke="#ffffff"
+    stroke-width="3"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <path
+    d="M24.5 20.5v23m15-23v23M24.5 32h15"
+    fill="none"
+    stroke="#ffffff"
+    stroke-width="3"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    opacity="0.9"
+  />
+</svg>

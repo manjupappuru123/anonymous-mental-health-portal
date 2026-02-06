@@ -19,6 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/issues', require('./routes/issueRoutes'));
 app.use('/api/counselors', require('./routes/counselorRoutes'));
+app.use('/api/notifications', require('./routes/notificationRoutes'));
 
 // Error handling middleware
 app.use(require('./middleware/errorMiddleware'));
